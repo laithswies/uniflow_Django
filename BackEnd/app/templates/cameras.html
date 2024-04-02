@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cameras CRUD</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Cameras CRUD</h1>
+
+    <!-- Form for creating a new camera -->
+    <form id="create-camera-form">
+        <label for="resolution">Resolution:</label>
+        <input type="text" id="resolution" name="resolution" required>
+        <label for="trained_model">Trained Model:</label>
+        <select id="trained_model" name="trained_model" required>
+            <option value="YOLO">YOLO</option>
+            <option value="RCNN">RCNN</option>
+            <option value="SSD">SSD</option>
+        </select>
+        <label for="fps">FPS:</label>
+        <input type="text" id="fps" name="fps" required>
+        <button type="submit">Create</button>
+    </form>
+
+    <!-- Table for displaying existing cameras and editing/deleting them -->
+    <table id="cameras-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Resolution</th>
+                <th>Trained Model</th>
+                <th>FPS</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Cameras will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <!-- Script for handling CRUD operations -->
+    <script>
+        // Function to load cameras from the server and populate the table
+        function loadCameras() {
+            $.get('/api/cameras/', function(data) {
+                $('#cameras-table tbody').empty();
+                data.forEach(function(camera) {
+                    $('#cameras-table tbody').append(`
+                        <tr data-id="${camera.camera_id}">
+                            <td>${camera.camera_id}</td>
+                            <td>${camera.resolution}</td>
+                            <td>${camera.trained_model}</td>
+                            <td>${camera.fps}</td>
+                            <td>
+                                <button class="edit-btn">Edit</button>
+                                <button class="delete-btn">Delete</button>
+                            </td>
+                        </tr>
+                    `);
+                });
+            });
+        }
+
+        // Load cameras on page load
+        $(document).ready(function() {
+            loadCameras();
+        });
+
+        // Handle form submission for creating a new camera
+        $('#create-camera-form').submit(function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: '/api/cameras/',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function() {
+                    loadCameras();
+                }
+            });
+        });
+
+        // Handle editing and deleting cameras using event delegation
+        $('#cameras-table').on('click', '.edit-btn', function() {
+            var cameraId = $(this).closest('tr').data('id');
+            var newResolution = prompt('Enter new resolution:');
+            if (newResolution !== null) {
+                $.ajax({
+                    url: `/api/cameras/${cameraId}/`,
+                    type: 'PUT',
+                    data: { resolution: newResolution },
+                    success: function() {
+                        loadCameras();
+                    }
+                });
+            }
+        });
+
+        $('#cameras-table').on('click', '.delete-btn', function() {
+            if (confirm('Are you sure you want to delete this camera?')) {
+                var cameraId = $(this).closest('tr').data('id');
+                $.ajax({
+                    url: `/api/cameras/${cameraId}/`,
+                    type: 'DELETE',
+                    success: function() {
+                        loadCameras();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

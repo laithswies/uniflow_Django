@@ -1,0 +1,28 @@
+POST http://127.0.0.1:8000/uniflow/signup 
+Content-Type: application/json
+
+{"username":"adam","user_name": "adam","name":"adam", "password": "Pass1234!", "email": "adam@mail.com" }
+
+###
+
+POST http://127.0.0.1:8000/uniflow/login
+Content-Type: application/json
+
+{ "username": "adam", "password": "Pass1234!" }
+
+###
+
+GET http://127.0.0.1:8000/uniflow/test_token
+Content-Type: application/json
+Authorization: token 4816ca86dcbc50225e9c618b5ca1e4e296a76aa0
+
+
+PUT http://127.0.0.1:8000/uniflow/gates/1/
+Content-Type: application/json
+
+{"location":"west","status": "OPEN" }
+
+GET http://127.0.0.1:8000/uniflow/gates/
+Content-Type: application/json
+
+{"location":"west","status": "OPEN" }
