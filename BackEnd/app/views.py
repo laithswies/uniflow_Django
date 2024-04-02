@@ -4,15 +4,18 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Camera, Gate, GateCamera, SecurityOfficer, SecurityOfficersGate, UserRole
-from .serializers import CameraSerializer, GateSerializer, GateCameraSerializer, SecurityOfficerSerializer, SecurityOfficersGateSerializer, UserRoleSerializer, UserSerializer
-from django.shortcuts import render,get_object_or_404
+from .models import Camera, Gate, GateCamera, SecurityOfficersGate, UserRole
+from .serializers import CameraSerializer, GateSerializer, GateCameraSerializer, SecurityOfficersGateSerializer, \
+    UserRoleSerializer, UserSerializer
+from django.shortcuts import render, get_object_or_404
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
+
 
 class CameraListCreate(generics.ListCreateAPIView):
     queryset = Camera.objects.all()
     serializer_class = CameraSerializer
+
 
 class GateListCreateRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView, generics.ListCreateAPIView):
     queryset = Gate.objects.all()
@@ -28,25 +31,26 @@ class GateListCreateRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView,
             queryset = queryset.filter(status=status)
         return queryset
 
+
 class GateCameraListCreate(generics.ListCreateAPIView):
     queryset = GateCamera.objects.all()
     serializer_class = GateCameraSerializer
 
-class SecurityOfficerListCreate(generics.ListCreateAPIView):
-    queryset = SecurityOfficer.objects.all()
-    serializer_class = SecurityOfficerSerializer
 
 class SecurityOfficersGateListCreate(generics.ListCreateAPIView):
     queryset = SecurityOfficersGate.objects.all()
     serializer_class = SecurityOfficersGateSerializer
 
+
 class UserRoleListCreate(generics.ListCreateAPIView):
     queryset = UserRole.objects.all()
     serializer_class = UserRoleSerializer
 
+
 class UserListCreate(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
 
 @api_view(['POST'])
 def signup(request):
@@ -60,6 +64,7 @@ def signup(request):
         return Response({'token': token.key, 'user': serializer.data})
     return Response(serializer.errors, status=status.HTTP_200_OK)
 
+
 @api_view(['POST'])
 def login(request):
     user = get_object_or_404(User, username=request.data['username'])
@@ -68,6 +73,7 @@ def login(request):
     token, created = Token.objects.get_or_create(user=user)
     serializer = UserSerializer(user)
     return Response({'token': token.key, 'user': serializer.data})
+
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])

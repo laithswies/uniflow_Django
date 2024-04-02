@@ -80,9 +80,12 @@ WSGI_APPLICATION = 'uniflow.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+        'OPTIONS': {
+            'options': '-c search_path=graduation_project'
+        },
         'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'm3fRUFdxuNNawFI',
+        'PASSWORD': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
     }
