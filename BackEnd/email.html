@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verification Code</title>
+  <style>
+    /* Global styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: #000;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #212121;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Text styles */
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    /* Code section styles */
+    .code-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+    }
+
+    .code-box {
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      font-size: 24px;
+      margin: 5px;
+      background-color: #333;
+      border-radius: 5px;
+      line-height: 50px;
+      overflow: hidden;
+      position: relative;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .code-box::before,
+    .code-box::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 5px;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .code-box.active::before {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+
+    .code-box.active::after {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: scale(1.2);
+    }
+
+    /* Button styles */
+    .button {
+      display: block;
+      width: 100%;
+      padding: 15px 20px;
+      font-size: 16px;
+      text-align: center;
+      color: #fff;
+      background-color: #c72c40;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .button::before,
+    .button::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .button::after {
+      opacity: 0.3;
+    }
+
+    .button:hover {
+      background-color: #b22236;
+    }
+
+    .button:hover::before,
+    .button:hover::after {
+      transform.button:hover::before,
+    .button:hover::after {
+      transform: scale(1.1);
+    }
+
+    /* Media queries for responsive design */
+    @media only screen and (max-width: 768px) {
+      .container {
+        max-width: 90%;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+
+      .code-box,
+      .button {
+        font-size: 18px;
+        padding: 12px 15px;
+      }
+    }
+
+    /* Subtle background gradient */
+    body:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.5) 100%);
+    }
+
+    /* Inner shadow for container */
+    .container {
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Verify Your Email</h1>
+    <p>Hi [Name],</p>
+    <p>Thanks for signing up! To complete your registration, please enter the following verification code:</p>
+    <div class.code-container">
+      <span class="code-box active">1</span>
+      <span class="code-box">2</span>
+      <span class="code-box">3</span>
+      <span class="code-box">4</span>
+    </div>
+    <p>This code will expire in 10 minutes.</p>
+    <a href="https://surveys.nces.ed.gov/CRDC/UserAccount/UserProfile/ResendVerificationEmail" class="button">Verify Now</a>
+  </div>
+</body>
+</html>
