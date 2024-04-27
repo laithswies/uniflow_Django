@@ -1,13 +1,33 @@
 from enum import Enum
 
-from django.contrib.auth.models import User
 from django.db import models
+
+
+class User(models.Model):
+    class Meta:
+        db_table = 'users'
+        managed = False
+
+    user_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    password_hash = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    username = models.CharField(max_length=20, unique=True)
+    is_account_verified = models.BooleanField(default=False)
+    def is_active(self):
+        return True
+    @property
+    def id(self):
+        return self.user_id
 
 
 class Camera(models.Model):
     class Meta:
-        db_table = 'camera'
+        db_table = 'cameras'
         managed = False
+
     camera_id = models.AutoField(primary_key=True)
     resolution = models.CharField(max_length=30)
     trained_model = models.CharField(max_length=10, choices=[(tag, tag) for tag in ['YOLO', 'RCNN', 'SSD']])
@@ -58,25 +78,9 @@ class UserRole(models.Model):
         db_table = 'users_roles'
         managed = False
 
-    user_role_id = models.AutoField(primary_key=True)
+    users_roles_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=20, choices=[(tag, tag) for tag in ['USER', 'ADMIN', 'SECURITY_OFFICER']])
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-class User(models.Model):
-    class Meta:
-        db_table = 'users'
-        managed = False
-
-    user_id = models.AutoField(primary_key=True)
-    user_name = models.CharField(max_length=20)
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    password = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    user_role = models.CharField(max_length=20, choices=[(tag, tag) for tag in ['USER', 'ADMIN', 'SECURITY_OFFICER']])
 
 
 class UserRoleEnum(Enum):
